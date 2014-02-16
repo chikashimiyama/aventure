@@ -24,10 +24,14 @@
 #define HOST_PRESET_CHANGE 0xA0 
 #define HOST_PING 0xA1
 #define HOST_RESPONSE 0xA2
+#define HOST_PRESET_CHANGE_CONFIRM 0xA3
 // system halt
 #define SYSTEM_HALT 0xF0
 // EOT (End Of Transfer)
 #define EOT 0xFF
+
+//XBEE
+#define XBEE_START_DELIMETAR 0x7E
 
 #include <avr/io.h>
 #include <stdlib.h>
@@ -52,7 +56,9 @@ volatile uint16_t packetCounter1;
 volatile uint8_t hostBuffer[HOSTMSG_BUFFER_SIZE];
 volatile uint8_t counterh_write;
 
-volatile uint8_t preset, bank, buttonState, updateFlag;
+volatile uint8_t preset, bank, proposedPreset, proposedBank;
+volatile uint8_t buttonState, updateFlag, proposalFlag;
+volatile uint8_t proposalCount;
 
 /* prototypes */
 void timer1Init(void);
@@ -67,6 +73,7 @@ void ledInit(void);
 void post(char* msg, uint8_t row, uint8_t clear);
 void notifyUpdate(void);
 void waitForSynthesizer(void);
+uint8_t checkSum(volatile uint8_t *buffer);
 
 void timer1Init(void){
 	TIMSK1 = 1 << OCIE1A; // out put compare match A interrupt enable for counter 0
@@ -128,7 +135,11 @@ void globalInit(void){
 	updateFlag = 0;
 	preset = 0;
 	bank = 0;
-
+	proposedBank = 0;
+	proposedPreset = 0;
+	proposalFlag = FALSE;
+	proposalCount = 0;
+	
 	counter0_read = 0;
 	counter0_write = 0;
 	counter1_read = 0;
@@ -142,17 +153,14 @@ void ledInit(void){
 }
 
 void notifyUpdate(){
-	// two lcd
+	// to lcd
 	char buf[16];
 	sprintf(buf,"Bnk:%3d Prs:%3d",bank, preset);
 	post(buf,0,TRUE);
-	// to host
-	uartSendByte(PRESET_CHANGE); //system data
-	uartSendByte(bank);
-	uartSendByte(preset);
-	uartSendByte(EOT);
 	updateFlag = 0;
 }
+
+
 
 void post(char* msg, uint8_t row, uint8_t clear){
 	if(clear) lcd_clrscr();
@@ -191,9 +199,20 @@ void waitForSynthesizer(void){
 	_delay_ms(1000);
 }
 
+uint8_t checkSum(volatile uint8_t *buffer){
+	uint16_t cs = 0;
+	for(int i = 3;i < 21;i++)
+	{
+		cs += buffer[i];
+	}
+	cs &= 0xff;
+	return (uint8_t)(0xff - cs);
+}
+
 int main(void)
 {	
 	uint8_t temp;
+
 	MCUCR |=(1<<JTD); MCUCR |=(1<<JTD); //jtag disable
 	lcd_init(LCD_DISP_ON); // lcd init
 	softuart_init(); // suart init
@@ -220,12 +239,12 @@ int main(void)
 		//left hand
 		while(counter0_write != counter0_read){
 			temp = buffer0[counter0_read];
-			if(temp == 126){
+			if(temp == XBEE_START_DELIMETAR){
 				packetCounter0 = 0;
 			}
 			packet0[packetCounter0] = temp;
 			if(packetCounter0 == 21){ // packet full
-				// check sum??
+				if(packet0[21] == checkSum(packet0)){
 				uartSendByte(LEFT_HAND);
 				uartSendByte((packet0[11] << 5) | (packet0[12] >> 3));
 				uartSendByte((packet0[13] << 5) | (packet0[14] >> 3));
@@ -233,6 +252,7 @@ int main(void)
 				uartSendByte((packet0[17] << 5) | (packet0[18] >> 3));
 				uartSendByte((packet0[19] << 5) | (packet0[20] >> 3));
 				uartSendByte(EOT);
+				}
 			}
 			packetCounter0++;	
 			counter0_read++;
@@ -247,14 +267,16 @@ int main(void)
 			}
 			packet1[packetCounter1] = temp;
 			if(packetCounter1 == 21){ // packet full
-				// check sum??
-				uartSendByte(RIGHT_HAND);
-				uartSendByte((packet1[11] << 5) | (packet1[12] >> 3));
-				uartSendByte((packet1[13] << 5) | (packet1[14] >> 3));
-				uartSendByte((packet1[15] << 5) | (packet1[16] >> 3));
-				uartSendByte((packet1[17] << 5) | (packet1[18] >> 3));
-				uartSendByte((packet1[19] << 5) | (packet1[20] >> 3));
-				uartSendByte(EOT);
+				
+				if(packet1[21] == checkSum(packet1)){
+					uartSendByte(RIGHT_HAND);
+					uartSendByte((packet1[11] << 5) | (packet1[12] >> 3));
+					uartSendByte((packet1[13] << 5) | (packet1[14] >> 3));
+					uartSendByte((packet1[15] << 5) | (packet1[16] >> 3));
+					uartSendByte((packet1[17] << 5) | (packet1[18] >> 3));
+					uartSendByte((packet1[19] << 5) | (packet1[20] >> 3));
+					uartSendByte(EOT);
+				}
 			}
 			packetCounter1++;
 			counter1_read++;
@@ -291,15 +313,43 @@ int main(void)
 					
 						break;	
 					}
+					case HOST_PRESET_CHANGE_CONFIRM:{
+						if(proposalFlag){
+							if((proposedBank == hostBuffer[1]) && (proposedPreset == hostBuffer[2])){
+								bank = proposedBank;
+								preset = proposedPreset;
+								proposalCount = 0;
+								proposalFlag = FALSE;
+								updateFlag = TRUE;
+							}else{
+								post("Err:can't change", 1, FALSE);
+							}
+						}
+						break;	
+					}
 					default:{
 						char buf[2];
-						
 						post(itoa(hostBuffer[0],buf,16),1,0);
 					}
 				}
 				counterh_write = 0;
 			}
 		}
+		if(proposalFlag){
+			// send request max 255 times
+			uartSendByte(PRESET_CHANGE);
+			uartSendByte(proposedBank);
+			uartSendByte(proposedPreset);
+			uartSendByte(EOT);
+			
+			if(proposalCount == 0xFF){ // wait 255 times
+				post("Err:can't change", 1, FALSE);
+				proposalFlag = FALSE; // reset parameter
+				proposalCount = 0;
+			}
+			proposalCount++;
+		}
+		
 		_delay_ms(5);
     }
 }
@@ -311,17 +361,24 @@ ISR(TIMER1_COMPA_vect){
 	switch (status)
 	{
 		case 2:{
-			if(bank != 255) bank++;
+			if(bank != 255){
+				proposalFlag = TRUE;
+				proposedBank = bank + 1;
+				proposedPreset = 0;
+			}
 			break;
 		}
 		case 1:{
-			if(bank != 0) bank--;
+			if(bank != 0){
+				proposalFlag = TRUE;
+				proposedBank = bank - 1;
+				proposedPreset = 0;
+			}
 			break;
 		}
 		case 0:{
-			bank = 0;
-			uartSendByte(SYSTEM_HALT); //system halt
 			post("System halt requested.",0, TRUE);
+			uartSendByte(SYSTEM_HALT); //system halt
 			uartSendByte(0xFF);
 			break;
 		}
@@ -339,17 +396,25 @@ ISR(PCINT1_vect){
 	switch (status)
 	{
 		case 2:{
-			if(preset != 255) preset++;
+			if(preset != 255){
+				proposalFlag = TRUE;
+				proposedPreset = preset + 1;
+			}
 			timer1Start();
 			break;
 		}
 		case 1:{
-			if(preset != 0) preset--;
+			if(preset != 0){
+				proposalFlag = TRUE;
+				proposedPreset = preset - 1;
+
+			}
 			timer1Start();
 			break;
 		}
 		case 0:{
-			preset = 0;
+			proposedPreset = 0;
+			proposalFlag = TRUE;
 			timer1Start();
 			break;
 		}
