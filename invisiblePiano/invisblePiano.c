@@ -2,6 +2,9 @@
 	HIGH 1SSFFFDD
 	LOW  0DDDDDDD
 */ 
+
+#define FLUTE
+
 #define TRUE 1
 #define FALSE 0
 #define F_CPU 20000000UL
@@ -11,6 +14,53 @@
 #define BUFFER_SIZE 256
 #define HOSTMSG_BUFFER_SIZE 24
 #define PACKET_LENGTH 25
+
+#ifdef PIANO // invisible piano
+
+#define BUTTON_PORT PORTB
+#define BUTTON_PIN PINB
+#define BUTTON_PIN_SHIFT 2
+#define BUTTON_PIN_L PB2
+#define BUTTON_PIN_R PB3
+#define BUTTON_DDR DDRB
+#define BUTTON_PCINT_L PCINT10
+#define BUTTON_PCINT_R PCINT11
+#define PCINT_EN_GROUP PCIE1
+#define BUTTON_PCINT_VECT PCINT1_vect
+#define BUTTON_PCIF PCIF1
+
+#define LED_PORT PORTA 
+#define LED_DDR DDRA
+#define LED_PORT_PIN PA6
+#define LED_PIN PA6
+
+#define SPLASH "Invisible Piano\nby C.Miyama 2014"
+
+#else // other inst
+
+#define PWR_LED_DDR DDRC
+#define PWR_LED_PORT PORTC
+#define PWR_LED PC7
+
+#define BUTTON_PORT PORTD
+#define BUTTON_PIN PIND
+#define BUTTON_PIN_SHIFT 5
+#define BUTTON_PIN_L PD5
+#define BUTTON_PIN_R PD6
+#define BUTTON_DDR DDRD
+#define BUTTON_PCINT_L PCINT29
+#define BUTTON_PCINT_R PCINT30
+#define PCINT_EN_GROUP PCIE3
+#define BUTTON_PCINT_VECT PCINT3_vect
+#define BUTTON_PCIF PCIF3
+
+#define LED_PORT PORTD
+#define LED_DDR DDRD
+#define LED_PORT_PIN PD7
+#define LED_PIN PD7
+
+#define SPLASH "Invisible FLUTE\nby C.Miyama 2014"
+#endif
 
 // data headers
 #define LEFT_HAND 0x80
@@ -61,19 +111,28 @@ volatile uint8_t buttonState, updateFlag, proposalFlag;
 volatile uint8_t proposalCount;
 
 /* prototypes */
+
+#ifdef PIANO
+void adcInit(void);
+uint8_t adcRead(uint8_t ch);
+#endif 
+
 void timer1Init(void);
 void timer1Start(void);
 void timer1Stop(void);
 void uartInit(unsigned int baud);
 void uartSendByte(char byte);
-void adcInit(void);
-uint8_t adcRead(uint8_t ch);
 void buttonInit(void);
 void ledInit(void);
 void post(char* msg, uint8_t row, uint8_t clear);
 void notifyUpdate(void);
 void waitForSynthesizer(void);
 uint8_t checkSum(volatile uint8_t *buffer);
+
+void powerLedInit(void){
+	PWR_LED_DDR |= (1 << PWR_LED);	
+	PWR_LED_PORT |= (1 << PWR_LED);
+}
 
 void timer1Init(void){
 	TIMSK1 = 1 << OCIE1A; // out put compare match A interrupt enable for counter 0
@@ -110,6 +169,7 @@ void uartSendByte(char byte){
 	loop_until_bit_is_set(UCSR0A, UDRE0);
 }
 
+#ifdef PIANO
 void adcInit(void){
 	ADMUX |= (1 << REFS0) | ( 1 << ADLAR ); // AVcc as reference - only 8 bit needed
 	ADCSRA |= (1 << ADEN) |(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0); // divided by 128
@@ -123,12 +183,15 @@ uint8_t adcRead(uint8_t ch)
 	return (ADCH); //only upper 8 bit
 }
 
+#endif
+
 void buttonInit(void){
-	DDRB &= ~((1 << PORTB2) | (1 << PORTB3));
-	PORTB |= (1 << PORTB2) | (1 << PORTB3);
+	BUTTON_DDR &= ~((1 << BUTTON_PIN_L) | (1 << BUTTON_PIN_R));
+	BUTTON_PORT |= (1 << BUTTON_PIN_L) | (1 << BUTTON_PIN_R);
 	buttonState = 0x03; // both state high as default
-	PCICR |= (1<<PCIE1); // enable interrupt on PCIN 15 ... 8
-	PCMSK1 |= (1<< PCINT10) | (1<< PCINT11); // enable PCINT on both ports
+	
+	PCICR |= (1<<PCINT_EN_GROUP); // enable interrupt
+	PCMSK1 |= (1<< BUTTON_PCINT_L) | (1<< BUTTON_PCINT_R); // enable PCINT on both ports
 }
 
 void globalInit(void){
@@ -148,8 +211,7 @@ void globalInit(void){
 }
 
 void ledInit(void){	
-	DDRA = (1 << PORTA6);
-	DDRD = (1 << PORTD1);
+	LED_DDR = (1 << LED_PIN);
 }
 
 void notifyUpdate(){
@@ -184,6 +246,7 @@ void waitForSynthesizer(void){
 		
 		if (softuart_kbhit())
 		{
+			
 			char c = softuart_getchar();
 			if(HOST_RESPONSE == c){
 				post("Response received\nSystem is ready", 0, TRUE);
@@ -214,22 +277,33 @@ int main(void)
 	uint8_t temp;
 
 	MCUCR |=(1<<JTD); MCUCR |=(1<<JTD); //jtag disable
+	ledInit();
+
+#ifdef PIANO
+	adcInit();
+#else
+	powerLedInit();
+#endif
+
 	lcd_init(LCD_DISP_ON); // lcd init
+	
 	softuart_init(); // suart init
 	globalInit();
 	timer1Init();
-	ledInit();
+
 	uartInit(MYUBBR);
 	buttonInit();
-	adcInit();
-	post("Invisible Piano\nby C.Miyama 2014",0,TRUE);
+	post(SPLASH,0,TRUE);
+
 	_delay_ms(1000);
 	post("booting system...",0,TRUE);
 	sei();
+	LED_PORT |= (1 << LED_PIN);
 	waitForSynthesizer();
 	_delay_ms(1000);
 	softuart_flush_input_buffer();	
 	notifyUpdate();
+	
 
     while(1) // main loop
     {
@@ -283,12 +357,14 @@ int main(void)
 			counter1_read &= 0xff; // wrap 255
 		}
 
+#ifdef PIANO
 		// pedal
 		uartSendByte(PEDAL);
 		uartSendByte(adcRead(0));
 		uartSendByte(adcRead(1));
 		uartSendByte(adcRead(2));
 		uartSendByte(EOT);
+#endif
 		
 		// check the mail box
 		while(softuart_kbhit()){
@@ -356,7 +432,10 @@ int main(void)
 
 /* interruptions */
 ISR(TIMER1_COMPA_vect){
-	uint8_t status = (PINB >> 2) & 0x03;
+
+	uint8_t status  = (BUTTON_PIN >> BUTTON_PIN_SHIFT) & 0x03;
+
+	status &= 0x03;
 	timer1Stop();
 	switch (status)
 	{
@@ -387,10 +466,11 @@ ISR(TIMER1_COMPA_vect){
 	updateFlag = 1;
 }
 
-ISR(PCINT1_vect){
+
+ISR(BUTTON_PCINT_VECT){
 	_delay_ms(20); // anti chattering
-	PCIFR |= (1 << PCIF1); // cancel all scheduled interruption caused by chattering
-	uint8_t status = (PINB >> 2) & 0x03;
+	PCIFR |= (1 << BUTTON_PCIF); // cancel all scheduled interruption caused by chattering
+	uint8_t status = (BUTTON_PIN >> 2) & 0x03;
 
 	timer1Stop();
 	switch (status)
@@ -427,14 +507,15 @@ ISR(PCINT1_vect){
 
 ISR(USART0_RX_vect){
 	buffer0[counter0_write] = UDR0;
-	PORTA = PINA ^ (1 << PORTA6);
+
+	LED_PORT = LED_PORT_PIN ^ (1 << LED_PIN);
 	counter0_write++;
 	counter0_write &= 0xff;
 }
 
 ISR(USART1_RX_vect){
 	buffer1[counter1_write] = UDR1;
-	PORTA = PINA ^ (1 << PORTA6);
+	LED_PORT = LED_PORT_PIN ^ (1 << LED_PIN);
 	counter1_write++;
 	counter1_write &= 0xff;
 }
