@@ -2,95 +2,15 @@
 	HIGH 1SSFFFDD
 	LOW  0DDDDDDD
 */ 
-
-#define FLUTE
-
-#define TRUE 1
-#define FALSE 0
-#define F_CPU 20000000UL
-#define BAUD  57600
-#define MYUBBR F_CPU/16/BAUD-1
-#define NUMBER_OF_ATTEMPT 100
-#define BUFFER_SIZE 256
-#define HOSTMSG_BUFFER_SIZE 24
-#define PACKET_LENGTH 25
-
-#ifdef PIANO // invisible piano
-
-#define BUTTON_PORT PORTB
-#define BUTTON_PIN PINB
-#define BUTTON_PIN_SHIFT 2
-#define BUTTON_PIN_L PB2
-#define BUTTON_PIN_R PB3
-#define BUTTON_DDR DDRB
-#define BUTTON_PCINT_L PCINT10
-#define BUTTON_PCINT_R PCINT11
-#define PCINT_EN_GROUP PCIE1
-#define BUTTON_PCINT_VECT PCINT1_vect
-#define BUTTON_PCIF PCIF1
-
-#define LED_PORT PORTA 
-#define LED_DDR DDRA
-#define LED_PORT_PIN PA6
-#define LED_PIN PA6
-
-#define SPLASH "Invisible Piano\nby C.Miyama 2014"
-
-#else // other inst
-
-#define PWR_LED_DDR DDRC
-#define PWR_LED_PORT PORTC
-#define PWR_LED PC7
-
-#define BUTTON_PORT PORTD
-#define BUTTON_PIN PIND
-#define BUTTON_PIN_SHIFT 5
-#define BUTTON_PIN_L PD5
-#define BUTTON_PIN_R PD6
-#define BUTTON_DDR DDRD
-#define BUTTON_PCINT_L PCINT29
-#define BUTTON_PCINT_R PCINT30
-#define PCINT_EN_GROUP PCIE3
-#define BUTTON_PCINT_VECT PCINT3_vect
-#define BUTTON_PCIF PCIF3
-
-#define LED_PORT PORTD
-#define LED_DDR DDRD
-#define LED_PORT_PIN PD7
-#define LED_PIN PD7
-
-#define SPLASH "Invisible FLUTE\nby C.Miyama 2014"
-#endif
-
-// data headers
-#define LEFT_HAND 0x80
-#define RIGHT_HAND 0x81
-#define PEDAL 0x82
-// system call headers
-#define PRESET_CHANGE 0x90
-#define PING 0x91
-#define QUERY 0x92
-// message from the host
-#define HOST_PRESET_CHANGE 0xA0 
-#define HOST_PING 0xA1
-#define HOST_RESPONSE 0xA2
-#define HOST_PRESET_CHANGE_CONFIRM 0xA3
-// system halt
-#define SYSTEM_HALT 0xF0
-// EOT (End Of Transfer)
-#define EOT 0xFF
-
-//XBEE
-#define XBEE_START_DELIMETAR 0x7E
+#include "instrument.h"
+#include "suart.h"
+#include "lcd.h"
 
 #include <avr/io.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-
-#include "suart.h"
-#include "lcd.h"
 
 /* global variables */
 volatile uint8_t buffer0[BUFFER_SIZE];
@@ -117,21 +37,38 @@ void adcInit(void);
 uint8_t adcRead(uint8_t ch);
 #endif 
 
+void ledInit(void);
+void ledCheck(void);
 void timer1Init(void);
 void timer1Start(void);
 void timer1Stop(void);
 void uartInit(unsigned int baud);
 void uartSendByte(char byte);
 void buttonInit(void);
-void ledInit(void);
 void post(char* msg, uint8_t row, uint8_t clear);
 void notifyUpdate(void);
 void waitForSynthesizer(void);
 uint8_t checkSum(volatile uint8_t *buffer);
 
-void powerLedInit(void){
-	PWR_LED_DDR |= (1 << PWR_LED);	
-	PWR_LED_PORT |= (1 << PWR_LED);
+
+
+void ledInit(void){
+	XBEE_LED_DDR |= 1 << XBEE_LED_PIN;
+	HOST_LED_DDR |= 1 << HOST_LED_PIN;	
+
+}
+
+void ledCheck(void){
+
+	HOST_LED_PORT |= (1 << HOST_LED_PIN);
+	while(1){
+		XBEE_LED_PORT ^= (1 << XBEE_LED_PIN);
+		HOST_LED_PORT ^= (1 << HOST_LED_PIN);
+		_delay_ms(1000);
+		XBEE_LED_PORT ^= (1 << XBEE_LED_PIN);
+		HOST_LED_PORT ^= (1 << HOST_LED_PIN);
+		_delay_ms(1000);
+	}
 }
 
 void timer1Init(void){
@@ -162,6 +99,20 @@ void uartInit(unsigned int baud){
     UBRR1H = (unsigned char)(baud >> 8);
 	UBRR1L = (unsigned char)baud;
 	UCSR1B = (1 << RXEN1 ) | ( 1 << RXCIE1 );
+	
+#ifdef UART_TX_CHECK
+	{
+		char x = 0;
+		while(1){
+			uartSendByte(x);
+			if(x == 255){
+				x = 0;
+			}
+			x++;
+			_delay_ms(500);
+		}
+	}	
+#endif
 }
 
 void uartSendByte(char byte){
@@ -182,13 +133,28 @@ uint8_t adcRead(uint8_t ch)
 	while(ADCSRA & (1<<ADSC));  // wait for conversion
 	return (ADCH); //only upper 8 bit
 }
-
 #endif
 
 void buttonInit(void){
 	BUTTON_DDR &= ~((1 << BUTTON_PIN_L) | (1 << BUTTON_PIN_R));
 	BUTTON_PORT |= (1 << BUTTON_PIN_L) | (1 << BUTTON_PIN_R);
 	buttonState = 0x03; // both state high as default
+	
+#ifdef BUTTON_CHECK // small check func for button debugging
+	while(1){
+		if(!((BUTTON_PIN >> BUTTON_PIN_L) & 0x01)){
+			XBEE_LED_PORT |= (1 << XBEE_LED_PIN);
+		}else{
+			XBEE_LED_PORT &= ~(1 << XBEE_LED_PIN);
+		}
+
+		if(!((BUTTON_PIN >> BUTTON_PIN_R) & 0x01)){
+			HOST_LED_PORT |= (1 << HOST_LED_PIN);
+		}else{
+			HOST_LED_PORT &= ~(1 << HOST_LED_PIN);
+		}
+	}
+#endif 
 	
 	PCICR |= (1<<PCINT_EN_GROUP); // enable interrupt
 	PCMSK1 |= (1<< BUTTON_PCINT_L) | (1<< BUTTON_PCINT_R); // enable PCINT on both ports
@@ -210,10 +176,6 @@ void globalInit(void){
 	counterh_write = 0;
 }
 
-void ledInit(void){	
-	LED_DDR = (1 << LED_PIN);
-}
-
 void notifyUpdate(){
 	// to lcd
 	char buf[16];
@@ -221,8 +183,6 @@ void notifyUpdate(){
 	post(buf,0,TRUE);
 	updateFlag = 0;
 }
-
-
 
 void post(char* msg, uint8_t row, uint8_t clear){
 	if(clear) lcd_clrscr();
@@ -277,14 +237,17 @@ int main(void)
 	uint8_t temp;
 
 	MCUCR |=(1<<JTD); MCUCR |=(1<<JTD); //jtag disable
+
 	ledInit();
 
 #ifdef PIANO
 	adcInit();
-#else
-	powerLedInit();
 #endif
 
+#ifdef LED_CHECK
+	ledCheck();
+#endif
+	
 	lcd_init(LCD_DISP_ON); // lcd init
 	
 	softuart_init(); // suart init
@@ -298,13 +261,12 @@ int main(void)
 	_delay_ms(1000);
 	post("booting system...",0,TRUE);
 	sei();
-	LED_PORT |= (1 << LED_PIN);
+	XBEE_LED_PORT |= (1 << XBEE_LED_PIN);
 	waitForSynthesizer();
 	_delay_ms(1000);
 	softuart_flush_input_buffer();	
 	notifyUpdate();
 	
-
     while(1) // main loop
     {
 		if(updateFlag){
@@ -424,8 +386,7 @@ int main(void)
 				proposalCount = 0;
 			}
 			proposalCount++;
-		}
-		
+		}	
 		_delay_ms(5);
     }
 }
@@ -508,14 +469,14 @@ ISR(BUTTON_PCINT_VECT){
 ISR(USART0_RX_vect){
 	buffer0[counter0_write] = UDR0;
 
-	LED_PORT = LED_PORT_PIN ^ (1 << LED_PIN);
+	XBEE_LED_PORT ^= (1 << XBEE_LED_PIN);
 	counter0_write++;
 	counter0_write &= 0xff;
 }
 
 ISR(USART1_RX_vect){
 	buffer1[counter1_write] = UDR1;
-	LED_PORT = LED_PORT_PIN ^ (1 << LED_PIN);
+	XBEE_LED_PORT ^= (1 << XBEE_LED_PIN);
 	counter1_write++;
 	counter1_write &= 0xff;
 }
