@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>GccApplication2</AssemblyName>
-    <Name>InvisiblePiano</Name>
+    <Name>instrument</Name>
     <RootNamespace>GccApplication2</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
@@ -76,6 +76,7 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>DEBUG</Value>
+      <Value>PIANO</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -93,7 +94,10 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="invisblePiano.c">
+    <Compile Include="instrument.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="instrument.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lcd.c">
