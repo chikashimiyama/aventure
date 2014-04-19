@@ -1,11 +1,11 @@
-#N canvas 675 440 1733 826 10;
+#N canvas 166 65 1393 826 10;
 #X declare -path lib;
 #X declare -path flute;
 #X declare -path external_x86;
 #X obj 128 31 adc~;
 #X obj 96 446 dac~;
 #X obj 564 52 declare -path lib;
-#X obj 565 104 declare -path flute;
+#X obj 564 76 declare -path flute;
 #N canvas 288 340 1440 856 samples 0;
 #X obj 1053 341 soundfiler;
 #X obj 1208 79 loadbang;
@@ -407,7 +407,7 @@
 #X connect 359 0 284 0;
 #X connect 360 0 359 0;
 #X connect 361 0 290 0;
-#X restore 559 128 pd samples;
+#X restore 563 100 pd samples;
 #X obj 803 40 loadmeter;
 #X floatatom 805 70 5 0 0 0 - - -, f 5;
 #X obj 128 70 envfol;
@@ -792,7 +792,7 @@
 #X obj 1043 652 iter;
 #X msg 522 208 devicename /dev/ttyUSB0;
 #X obj 861 755 s test;
-#X obj 805 227 throw~ mix;
+#X obj 787 223 throw~ mix;
 #X obj 787 191 jingle;
 #X obj 977 80 loadbang;
 #X msg 980 112 \; pd dsp 1;

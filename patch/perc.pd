@@ -1,0 +1,37 @@
+#N canvas 212 68 450 300 10;
+#X declare -path lib;
+#X declare -path percussion;
+#X obj 347 22 loadbang;
+#X msg 347 50 \; pd dsp 1;
+#X obj 341 175 dac~;
+#X obj 346 144 catch~ mix;
+#X obj 57 27 declare -path lib;
+#X obj 57 50 declare -path percussion;
+#X obj 346 92 jingle;
+#X obj 346 116 throw~ mix;
+#X obj 56 163 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 81 162 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 109 163 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 134 162 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#N canvas 466 123 450 300 sample 0;
+#N canvas 0 22 450 300 snare 0;
+#X restore 82 69 pd snare;
+#N canvas 0 22 450 300 woodblocks 0;
+#X restore 84 94 pd woodblocks;
+#N canvas 0 22 450 300 triangle 0;
+#X restore 84 119 pd triangle;
+#N canvas 0 22 450 300 timpani 0;
+#X restore 84 152 pd timpani;
+#N canvas 0 22 450 300 marimba 0;
+#X restore 85 188 pd marimba;
+#X restore 340 224 pd sample;
+#X text 90 275 left;
+#X text 227 275 right;
+#X connect 0 0 1 0;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 6 0 7 0;
