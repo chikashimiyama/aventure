@@ -1,0 +1,10 @@
+#N canvas 258 85 450 300 10;
+#X obj 89 83 shell;
+#X msg 89 52 shutdown -h now;
+#X obj 118 123 print;
+#X obj 89 26 inlet;
+#X text 104 149 system halt from pd;
+#X connect 0 0 2 0;
+#X connect 0 1 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 1 0;
