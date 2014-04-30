@@ -3,11 +3,11 @@
 #X obj 115 174 *~ 0.1;
 #X obj 135 216 outlet~;
 #X obj 99 40 inlet;
-#X msg 110 88 set \$1_\$2 \, bang;
 #X obj 155 61 unpack 0 0 0;
+#X msg 110 88 set pf_\$1_\$2 \, bang;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 3 0 4 0;
 #X connect 3 0 5 0;
-#X connect 4 0 0 0;
-#X connect 5 2 1 1;
+#X connect 3 0 4 0;
+#X connect 4 2 1 1;
+#X connect 5 0 0 0;
