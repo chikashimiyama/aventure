@@ -1,0 +1,35 @@
+#N canvas 295 56 429 430 10;
+#X obj -1430 159 t l l;
+#X obj -1450 225 del;
+#X obj -1350 143 list append;
+#X obj -1400 114 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj -1351 166 list split 2;
+#X msg -1449 193 \$2;
+#X obj -1406 354 outlet;
+#X obj -1352 13 inlet;
+#X obj -1350 71 t b l;
+#X obj -1396 42 route stop;
+#X msg -1508 266 stop;
+#X obj -1470 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj -1303 283 t b;
+#X obj -1313 329 outlet;
+#X text -1369 390 to line;
+#X connect 0 0 5 0;
+#X connect 0 1 6 0;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 4 1 2 1;
+#X connect 4 2 12 0;
+#X connect 5 0 1 0;
+#X connect 7 0 9 0;
+#X connect 8 0 3 0;
+#X connect 8 1 2 1;
+#X connect 9 0 11 0;
+#X connect 9 1 8 0;
+#X connect 10 0 6 0;
+#X connect 11 0 10 0;
+#X connect 12 0 13 0;

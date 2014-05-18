@@ -19,7 +19,7 @@
 #X msg 246 264 0 6000;
 #X obj 244 5 > 0;
 #X obj 244 29 change;
-#X obj 244 55 sel 0 1;
+#X obj 245 83 sel 0 1;
 #X msg 431 208 0 10;
 #X obj 315 221 / 127;
 #X obj 313 31 moses 0;
@@ -27,6 +27,8 @@
 #X msg 316 250 \$1 40;
 #X obj 174 431 outlet~;
 #X obj 117 364 tabread4~ pf_o\$1;
+#X obj 433 116 spigot;
+#X obj 479 50 inlet;
 #X connect 0 0 2 1;
 #X connect 0 0 2 0;
 #X connect 1 0 25 0;
@@ -53,10 +55,12 @@
 #X connect 17 0 18 0;
 #X connect 18 0 19 0;
 #X connect 19 0 11 0;
-#X connect 19 1 20 0;
+#X connect 19 1 27 0;
 #X connect 20 0 0 0;
 #X connect 21 0 24 0;
 #X connect 22 1 23 1;
 #X connect 23 0 21 0;
 #X connect 24 0 0 0;
 #X connect 26 0 1 0;
+#X connect 27 0 20 0;
+#X connect 28 0 27 1;
