@@ -1,4 +1,4 @@
-#N canvas 275 56 807 393 10;
+#N canvas 235 299 807 393 10;
 #X declare -path lib;
 #X declare -path percussion;
 #X obj 477 293 loadbang;
@@ -182,7 +182,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 149 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
 #X obj 171 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 200 1;
+-1 -1 0 1;
 #X obj 194 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 304 175 pc_confirm;
@@ -297,7 +297,7 @@ read -resize thigh/tom2.wav td_tom2;
 1;
 #X obj 194 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#N canvas 556 210 652 500 cheek_cym 1;
+#N canvas 556 210 652 500 cheek_cym 0;
 #X obj 106 378 throw~ dmix;
 #X obj 123 285 tabplay~ cheek_c0;
 #X obj 123 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -307,7 +307,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 122 168 spigot;
 #X obj 197 115 r Lshift;
 #X obj 197 171 change;
-#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 35 35 r perc_Lpalm;
 #X obj 197 145 <= 1;
@@ -326,7 +326,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 420 227 erandom 4;
 #X obj 419 171 spigot;
 #X obj 494 174 change;
-#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 494 148 <= 1;
 #X obj 325 103 difference;
@@ -503,7 +503,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 65 296 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 166 56 r perc_Lmiddle;
-#X obj 89 167 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 89 167 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 93 143 change;
 #X obj 76 67 == 0;
@@ -523,7 +523,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 305 390 throw~ dmix;
 #X obj 282 295 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 313 157 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 313 157 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 313 126 change;
 #X obj 293 66 == 0;
@@ -715,7 +715,7 @@ read -resize thigh/tom2.wav td_tom2;
 #X obj 89 260 spigot;
 #X obj 171 94 r Lshift;
 #X obj 171 235 change;
-#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 154 148 == 0;
 #X obj 166 118 t f f;
@@ -736,7 +736,7 @@ read -resize thigh/tom2.wav td_tom2;
 -1 -1;
 #X obj 343 258 spigot;
 #X obj 425 233 change;
-#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 408 146 == 0;
 #X obj 420 116 t f f;
@@ -970,17 +970,10 @@ read -resize thigh/tom2.wav td_tom2;
 #X text 428 166 thumb + palm;
 #X text 613 163 midlle;
 #X text 379 198 left thumb + middle;
-#X obj -22 175 unpack 0 0 0 0 0;
-#X obj 149 171 unpack 0 0 0 0 0;
-#X floatatom 56 230 5 0 0 0 - - -;
-#X floatatom 72 246 5 0 0 0 - - -;
-#X floatatom 216 223 5 0 0 0 - - -;
-#X floatatom 232 239 5 0 0 0 - - -;
 #X msg -13 49 open 2;
 #X obj 171 46 r toAVR;
-#X msg 101 148 \$1 \$2 \$5;
 #X msg -2 156 \$1 \$2 \$5;
-#N canvas 642 288 717 473 release_ride 1;
+#N canvas 642 288 717 473 release_ride 0;
 #X obj 105 274 line~;
 #X obj 152 406 throw~ dmix;
 #X obj 112 314 tabread4~ ride;
@@ -1061,6 +1054,11 @@ read -resize thigh/tom2.wav td_tom2;
 #X connect 37 0 30 0;
 #X restore 508 81 pd release_ride;
 #X text 616 80 thumb;
+#X obj -95 50 loadbang;
+#X msg -98 94 devicename /dev/ttyUSB0;
+#X obj -22 175 unpack 0 0 0;
+#X obj 149 171 unpack 0 0 0;
+#X msg 101 148 \$5 \$2 \$1;
 #X connect 0 0 1 0;
 #X connect 5 0 7 0;
 #X connect 8 0 2 0;
@@ -1072,8 +1070,8 @@ read -resize thigh/tom2.wav td_tom2;
 #X connect 13 0 33 2;
 #X connect 14 0 16 0;
 #X connect 16 0 15 0;
-#X connect 19 0 71 0;
-#X connect 19 1 70 0;
+#X connect 19 0 64 0;
+#X connect 19 1 71 0;
 #X connect 19 2 14 0;
 #X connect 19 3 18 0;
 #X connect 19 4 17 0;
@@ -1096,17 +1094,15 @@ read -resize thigh/tom2.wav td_tom2;
 #X connect 39 3 11 0;
 #X connect 39 4 12 0;
 #X connect 39 5 13 0;
-#X connect 62 0 9 0;
-#X connect 62 1 27 0;
-#X connect 62 2 10 0;
-#X connect 62 3 64 0;
-#X connect 62 4 65 0;
-#X connect 63 0 11 0;
-#X connect 63 1 12 0;
-#X connect 63 2 13 0;
-#X connect 63 3 66 0;
-#X connect 63 4 67 0;
+#X connect 62 0 20 0;
+#X connect 63 0 20 0;
+#X connect 64 0 69 0;
+#X connect 67 0 68 0;
 #X connect 68 0 20 0;
-#X connect 69 0 20 0;
-#X connect 70 0 63 0;
-#X connect 71 0 62 0;
+#X connect 69 0 9 0;
+#X connect 69 1 27 0;
+#X connect 69 2 10 0;
+#X connect 70 0 11 0;
+#X connect 70 1 12 0;
+#X connect 70 2 13 0;
+#X connect 71 0 70 0;
