@@ -2,9 +2,9 @@
 #X obj 118 123 print;
 #X obj 89 26 inlet;
 #X text 104 149 system halt from pd;
-#X msg 88 52 shutdown now;
 #X obj 89 83 shell;
-#X connect 1 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 0 0;
-#X connect 4 1 0 0;
+#X msg 88 52 sudo shutdown now;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 3 1 0 0;
+#X connect 4 0 3 0;
