@@ -7,7 +7,7 @@
 #X obj 224 320 declare -path lib;
 #X obj 224 343 declare -path percussion;
 #X obj 274 23 jingle;
-#N canvas 507 569 853 732 sample 1;
+#N canvas 507 569 853 732 sample 0;
 #X obj 532 25 loadbang;
 #X obj 441 342 soundfiler;
 #X obj 55 35 table cheek_c0;
@@ -210,9 +210,9 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 24 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 101 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
--1 -1 5100 1;
+-1 -1 0 1;
 #X obj 123 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 8000 1;
+-1 -1 0 1;
 #X obj 146 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 219 198 pc_confirm;
@@ -239,11 +239,11 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 221 269 loadmeter;
 #X floatatom 221 296 5 0 0 0 - - -;
 #X obj 1 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 900 1;
+-1 -1 0 1;
 #X obj 62 98 uart_decode;
 #X obj -22 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 0 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 0 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X obj 23 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
@@ -333,9 +333,9 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X connect 19 0 5 0;
 #X connect 19 1 11 0;
 #X restore 101 308 pd data_;
-#X obj 101 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 101 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 123 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 123 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 146 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
@@ -349,7 +349,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 122 168 spigot;
 #X obj 197 115 r Lshift;
 #X obj 197 171 change;
-#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 35 35 r perc_Lpalm;
 #X obj 28 100 difference;
@@ -367,7 +367,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 420 227 erandom 4;
 #X obj 419 171 spigot;
 #X obj 494 174 change;
-#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 325 103 difference;
 #X obj 333 76 t f f;
@@ -511,15 +511,15 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X connect 38 0 19 1;
 #X connect 39 0 38 0;
 #X restore 538 146 pd tooth_anvil;
-#N canvas 1900 618 450 300 midi 0;
+#N canvas 1900 618 712 324 midi 1;
 #X obj 22 154 outlet;
 #X obj 74 153 outlet;
 #X obj 130 155 outlet;
 #X obj 181 153 outlet;
 #X obj 238 152 outlet;
 #X obj 290 154 outlet;
-#X obj 51 60 r to_perc;
-#X obj 56 92 route 71 77 64 47 53 40;
+#X obj 51 60 r perc;
+#X obj 176 105 route 100 101 102 103 104 105;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
 #X connect 7 1 1 0;
@@ -533,7 +533,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 66 332 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 167 92 r perc_Lmiddle;
-#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 25 158 change;
 #X obj 15 114 == 0;
@@ -550,7 +550,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 306 426 throw~ dmix;
 #X obj 283 331 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 312 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 312 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 314 162 change;
 #X obj 304 104 == 0;
@@ -731,7 +731,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 89 260 spigot;
 #X obj 171 94 r Lshift;
 #X obj 171 235 change;
-#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 154 148 == 0;
 #X obj 87 63 r perc_Lthumb;
@@ -749,7 +749,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 -1 -1;
 #X obj 343 258 spigot;
 #X obj 425 233 change;
-#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 408 146 == 0;
 #X obj 291 128 difference;
@@ -833,7 +833,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 107 358 / 30;
 #X floatatom 109 385 5 0 0 0 - - -;
 #X obj -107 122 > 20;
-#X obj 340 206 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 340 206 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 237 226 spigot;
 #X obj 234 412 throw~ dmix;
