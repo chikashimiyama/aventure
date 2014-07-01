@@ -32,7 +32,7 @@
 #X obj 421 273 min 1;
 #X msg 135 278 4500;
 #X obj 133 350 tabplay~ pf_o\$1;
-#X obj 242 72 < -70;
+#X obj 242 72 < -50;
 #X connect 0 0 2 1;
 #X connect 0 0 2 0;
 #X connect 1 0 10 0;
