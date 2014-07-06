@@ -208,7 +208,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj -22 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
 #X obj 24 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4131 1;
+-1 -1 0 1;
 #X obj 101 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
 #X obj 123 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -245,7 +245,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 1;
 #X obj 0 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X obj 23 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 23 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #N canvas 267 193 429 327 data_ 0;
 #X obj -14 29 inlet;
@@ -349,7 +349,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 122 168 spigot;
 #X obj 197 115 r Lshift;
 #X obj 197 171 change;
-#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 35 35 r perc_Lpalm;
 #X obj 28 100 difference;
@@ -533,7 +533,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 66 332 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 167 92 r perc_Lmiddle;
-#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 25 158 change;
 #X obj 15 114 == 0;
@@ -648,7 +648,7 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X obj 144 342 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 245 102 r perc_Lmiddle;
-#X obj 168 213 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 168 213 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 172 189 change;
 #X obj 144 320 spigot;
@@ -724,14 +724,14 @@ belly/mid1.wav td_mid1 \, read -resize thigh/tom1.wav td_tom1 \, read
 #X connect 36 0 35 0;
 #X connect 37 0 36 0;
 #X restore 538 166 pd belly_mute_drum;
-#N canvas 804 377 545 501 thigh_drum 1;
+#N canvas 804 377 545 501 thigh_drum 0;
 #X obj 85 440 throw~ dmix;
 #X obj 88 294 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 89 260 spigot;
 #X obj 171 94 r Lshift;
 #X obj 171 235 change;
-#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 154 148 == 0;
 #X obj 87 63 r perc_Lthumb;

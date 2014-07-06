@@ -556,11 +556,11 @@
 #X obj 195 138 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 217 138 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 237 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 200 1;
-#X obj 259 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+#X obj 237 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
+#X obj 259 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 1099 1;
 #X obj 282 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 562 124 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -568,7 +568,7 @@
 #X obj 584 124 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 604 125 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 10400 1;
+-1 -1 0 1;
 #X obj 626 125 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 649 125 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -652,11 +652,11 @@
 #X obj 42 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 65 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 857 1;
 #X obj 88 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -261234
--1 -1 156 1;
-#X obj 111 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
+#X obj 111 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
+-1 -1 156 1;
 #X obj 135 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X obj 163 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -228856
@@ -664,7 +664,7 @@
 #X obj 184 273 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
 #X obj 207 271 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -261234
--1 -1 8107 1;
+-1 -1 0 1;
 #X obj 232 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 256 269 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -867,7 +867,7 @@
 #X obj 329 323 &&;
 #X obj 399 219 t b f;
 #X obj 337 290 t b f;
-#X obj 239 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 239 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 92 156 < 30;
 #X obj 157 160 < 30;
@@ -1142,7 +1142,7 @@
 #X restore 72 184 pd fromMIDI_________;
 #X obj 43 90 comport 2 57600;
 #X obj 44 152 route 128 129 130 144 145 240;
-#N canvas 448 192 993 552 granular 1;
+#N canvas 448 192 993 552 granular 0;
 #X obj 496 488 throw~ pmix;
 #X obj 492 165 r pf_rhI;
 #X obj 556 167 r pf_rhM;
