@@ -479,7 +479,7 @@ trombone/note/70.wav tb_b;
 #X connect 43 0 42 0;
 #X connect 44 0 42 0;
 #X restore 462 160 pd pv;
-#N canvas 335 128 1205 695 sample_playback 1;
+#N canvas 335 128 1205 695 sample_playback 0;
 #X obj 112 193 change;
 #X obj 117 162 i;
 #X obj 441 637 throw~ tb_mix;
@@ -636,7 +636,7 @@ trombone/note/70.wav tb_b;
 #X obj 299 34 r toAVR;
 #X msg 167 41 open 2;
 #X obj 316 189 vsl 15 128 0 127 0 0 empty empty palm 0 -9 0 10 -262144
--1 -1 11300 1;
+-1 -1 0 1;
 #X obj 210 63 comport 2 57600;
 #X obj 174 189 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
