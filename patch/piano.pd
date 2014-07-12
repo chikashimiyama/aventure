@@ -3,7 +3,7 @@
 #X declare -path external_x86;
 #X obj 370 313 dac~;
 #X obj 371 361 declare -path lib;
-#N canvas 1599 651 1521 866 samples 0;
+#N canvas 0 22 1408 804 samples 0;
 #X obj 1078 361 soundfiler;
 #X obj 1208 79 loadbang;
 #X msg 1062 151 49;
