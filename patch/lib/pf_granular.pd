@@ -69,7 +69,7 @@
 #X obj 472 466 max 0;
 #X obj 526 190 + 10;
 #X obj 176 132 cnt 0 2;
-#X obj 722 387 / 20;
+#X obj 722 387 / 10;
 #X connect 0 0 14 0;
 #X connect 2 0 0 1;
 #X connect 3 0 6 0;

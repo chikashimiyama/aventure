@@ -1,4 +1,4 @@
-#N canvas 607 101 228 291 10;
+#N canvas 465 143 228 291 10;
 #X declare -path lib;
 #X declare -path percussion;
 #X declare -path lib;
