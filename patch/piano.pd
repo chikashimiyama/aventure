@@ -562,7 +562,7 @@
 #X obj 259 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 282 139 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 200 1;
 #X obj 562 124 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 584 124 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -650,7 +650,7 @@
 #X obj 40 223 unpack 0 0 0 0 0;
 #X obj 158 225 unpack 0 0 0 0 0;
 #X obj 42 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 156 1;
 #X obj 65 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 88 270 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -261234
@@ -1208,14 +1208,12 @@
 #X connect 7 0 17 0;
 #X connect 8 0 18 0;
 #X connect 9 0 19 0;
-#X connect 10 0 11 0;
 #X connect 11 0 23 0;
 #X connect 11 1 24 1;
 #X connect 11 1 25 1;
 #X connect 11 1 26 1;
 #X connect 11 1 27 1;
 #X connect 12 0 47 0;
-#X connect 13 0 14 0;
 #X connect 14 0 21 0;
 #X connect 14 1 16 1;
 #X connect 14 1 17 1;
