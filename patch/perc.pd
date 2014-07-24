@@ -216,15 +216,15 @@ tri2;
 #X obj 274 47 throw~ dmix;
 #X obj 274 75 catch~ dmix;
 #X obj -22 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
--1 -1 3586 1;
+-1 -1 0 1;
 #X obj 24 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 3600 1;
+-1 -1 0 1;
 #X obj 101 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
--1 -1 3274 1;
+-1 -1 0 1;
 #X obj 123 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 9900 1;
+-1 -1 0 1;
 #X obj 146 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4200 1;
+-1 -1 0 1;
 #X obj 219 198 pc_confirm;
 #X obj 219 242 s preset;
 #X floatatom 219 221 5 0 0 0 - - -;
@@ -251,11 +251,11 @@ tri2;
 #X obj 1 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 62 98 uart_decode;
-#X obj -22 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj -22 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 0 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X obj 23 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 23 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #N canvas 267 193 429 327 data_ 0;
 #X obj -14 29 inlet;
@@ -343,11 +343,11 @@ tri2;
 #X connect 19 0 5 0;
 #X connect 19 1 11 0;
 #X restore 101 308 pd data_;
-#X obj 101 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 101 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 123 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 123 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 146 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 146 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #N canvas 556 210 652 500 cheek_cym 0;
 #X obj 106 378 throw~ dmix;
@@ -359,7 +359,7 @@ tri2;
 #X obj 122 168 spigot;
 #X obj 197 115 r Lshift;
 #X obj 197 171 change;
-#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 197 196 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 35 35 r perc_Lpalm;
 #X obj 28 100 difference;
@@ -377,7 +377,7 @@ tri2;
 #X obj 420 227 erandom 4;
 #X obj 419 171 spigot;
 #X obj 494 174 change;
-#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 494 199 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 325 103 difference;
 #X obj 333 76 t f f;
@@ -541,7 +541,7 @@ tri2;
 #X obj 89 260 spigot;
 #X obj 171 94 r Lshift;
 #X obj 171 235 change;
-#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 171 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 154 148 == 0;
 #X obj 87 63 r perc_Lthumb;
@@ -559,7 +559,7 @@ tri2;
 -1 -1;
 #X obj 343 258 spigot;
 #X obj 425 233 change;
-#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 425 258 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 408 146 == 0;
 #X obj 291 128 difference;
@@ -925,7 +925,7 @@ tri2;
 #X obj 66 332 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 167 92 r perc_Lmiddle;
-#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 103 225 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 25 158 change;
 #X obj 15 114 == 0;
@@ -941,7 +941,7 @@ tri2;
 #X obj 306 426 throw~ dmix;
 #X obj 283 331 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 312 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 312 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 314 162 change;
 #X obj 304 104 == 0;
@@ -1185,7 +1185,7 @@ tri2;
 #X obj 136 170 sel 1;
 #X obj 142 123 > 20;
 #X obj 139 30 r perc_Lmiddle;
-#X obj 293 169 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 293 169 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 284 33 r Lshift;
 #X obj 290 144 change;
@@ -1278,7 +1278,7 @@ tri2;
 #X text 72 33 tooth sound;
 #X obj 51 78 r perc_Lmiddle;
 #X obj 168 91 spigot;
-#X obj 224 119 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 224 119 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 114 351 *~;
 #X obj 114 256 / 127;
