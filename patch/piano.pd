@@ -1142,6 +1142,7 @@
 #X obj 43 90 comport 2 57600;
 #X obj 44 152 route 128 129 130 144 145 240;
 #X obj 202 250 * 2.5;
+#X obj 414 310 outlet~;
 #X connect 3 0 4 0;
 #X connect 8 0 52 0;
 #X connect 9 0 52 0;
@@ -1173,6 +1174,7 @@
 #X connect 31 0 29 0;
 #X connect 35 0 0 0;
 #X connect 35 0 0 1;
+#X connect 35 0 55 0;
 #X connect 36 0 34 0;
 #X connect 37 0 53 0;
 #X connect 48 0 52 0;
