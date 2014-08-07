@@ -216,9 +216,9 @@ tri2;
 #X obj 274 47 throw~ dmix;
 #X obj 274 75 catch~ dmix;
 #X obj -22 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
--1 -1 6626 1;
+-1 -1 0 1;
 #X obj 24 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5301 1;
+-1 -1 1325 1;
 #X obj 101 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -204800
 -1 -1 0 1;
 #X obj 123 197 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -251,7 +251,7 @@ tri2;
 #X obj 1 201 vsl 15 100 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 62 98 uart_decode;
-#X obj -22 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj -22 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 0 345 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
@@ -1005,7 +1005,7 @@ tri2;
 #X text 72 33 tooth sound;
 #X obj 51 78 r perc_Lmiddle;
 #X obj 168 91 spigot;
-#X obj 224 119 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 224 119 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 114 351 *~;
 #X obj 114 256 / 127;
