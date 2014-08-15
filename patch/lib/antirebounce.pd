@@ -1,0 +1,17 @@
+#N canvas 216 174 450 300 10;
+#X obj -47 130 difference;
+#X obj -43 89 t f f b;
+#X obj -23 159 f;
+#X obj -51 205 *;
+#X obj -67 50 inlet;
+#X text 22 181 previous value should be zero;
+#X obj -52 241 outlet;
+#X obj -23 182 < 10;
+#X connect 0 0 3 0;
+#X connect 1 0 2 1;
+#X connect 1 1 0 0;
+#X connect 1 2 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 6 0;
+#X connect 4 0 1 0;
+#X connect 7 0 3 1;
