@@ -7,7 +7,8 @@
 //#define LED_CHECK // if defined, just blink led
 //#define BUTTON_CHECK // if defined, Button and LEDs will be linked
 //#define UART_TX_CHECK
-#define UART_SOFT_RX_CHECK
+//#define UART_SOFT_RX_CHECK
+
 
 //SPLASH Text
 #ifdef PIANO
@@ -46,6 +47,7 @@
 	#define PCINT_EN_GROUP PCIE1
 	#define BUTTON_PCINT_VECT PCINT1_vect
 	#define BUTTON_PCIF PCIF1
+	#define BUTTON_PCMSK PCMSK1
 	
 	// xbee led
 	#define XBEE_LED_PORT PORTA
@@ -70,7 +72,8 @@
 	#define PCINT_EN_GROUP PCIE3
 	#define BUTTON_PCINT_VECT PCINT3_vect
 	#define BUTTON_PCIF PCIF3
-
+	#define BUTTON_PCMSK PCMSK3
+	
 	// xbee
 	#define XBEE_LED_PORT PORTD
 	#define XBEE_LED_DDR DDRD

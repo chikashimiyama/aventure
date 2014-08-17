@@ -1,4 +1,4 @@
-#N canvas 1779 -128 1366 686 10;
+#N canvas -93 365 1366 686 10;
 #X msg 138 68 devices;
 #X obj 146 103 comport 4 57600;
 #X obj 172 229 list prepend;
@@ -51,7 +51,8 @@
 #X floatatom 795 587 5 0 0 0 - - -;
 #X floatatom 881 596 5 0 0 0 - - -;
 #X obj 47 126 print;
-#X msg 219 72 devicename COM8;
+#X floatatom 84 59 5 0 0 0 - - -;
+#X msg 219 71 devicename COM8;
 #X connect 0 0 1 0;
 #X connect 1 0 4 0;
 #X connect 1 0 50 0;
@@ -113,3 +114,4 @@
 #X connect 43 20 27 0;
 #X connect 43 21 44 0;
 #X connect 51 0 1 0;
+#X connect 52 0 1 0;

@@ -1,4 +1,4 @@
-#N canvas 1704 0 1920 1038 10;
+#N canvas 418 71 1366 686 10;
 #X msg -53 -78 devices;
 #X msg -115 -79 close;
 #X obj 126 225 unpack 0 0 0 0 0;
@@ -19,16 +19,16 @@
 #X obj -92 117 list append;
 #X obj -92 1 split 128 256;
 #X msg 322 94 162;
-#X obj 126 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 149 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 172 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 195 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 219 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+#X obj 126 263 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5379 1;
+#X obj 149 263 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5229 1;
+#X obj 172 263 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 6325 1;
+#X obj 195 263 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 4682 1;
+#X obj 219 263 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5379 1;
 #X obj 243 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 266 263 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
@@ -68,16 +68,13 @@
 #X msg -225 -6 163 \, 4 \, 2 \, 255;
 #X msg -217 85 200 \, 255;
 #X obj 78 60 print;
-#X obj -92 -38 comport 4 9600;
-#X obj 298 39 print arduino;
-#X obj 289 6 comport 8 9600;
-#X msg 307 -47 devices;
-#X msg 380 -37 3;
-#X msg 388 4 close;
 #X msg -247 -62 160;
-#X msg 33 -75 devicename COM9;
-#X connect 0 0 56 0;
-#X connect 1 0 56 0;
+#X obj -92 -38 comport 4 57600;
+#X msg 30 -75 devicename COM10;
+#X floatatom 183 417 5 0 0 0 - - -;
+#X floatatom 201 410 5 0 0 0 - - -;
+#X connect 0 0 57 0;
+#X connect 1 0 57 0;
 #X connect 2 0 20 0;
 #X connect 2 1 21 0;
 #X connect 2 2 22 0;
@@ -111,8 +108,10 @@
 #X connect 17 0 12 0;
 #X connect 18 0 13 0;
 #X connect 18 1 15 0;
-#X connect 19 0 56 0;
+#X connect 19 0 57 0;
 #X connect 20 0 42 0;
+#X connect 22 0 59 0;
+#X connect 23 0 60 0;
 #X connect 25 0 38 0;
 #X connect 30 0 34 0;
 #X connect 33 0 36 0;
@@ -134,14 +133,10 @@
 #X connect 48 0 51 0;
 #X connect 49 0 51 0;
 #X connect 50 0 47 0;
-#X connect 52 0 56 0;
-#X connect 53 0 56 0;
-#X connect 54 0 56 0;
-#X connect 56 0 18 0;
-#X connect 56 0 55 0;
+#X connect 52 0 57 0;
+#X connect 53 0 57 0;
+#X connect 54 0 57 0;
+#X connect 56 0 57 0;
+#X connect 57 0 18 0;
+#X connect 57 0 55 0;
 #X connect 58 0 57 0;
-#X connect 59 0 58 0;
-#X connect 60 0 58 0;
-#X connect 61 0 58 0;
-#X connect 62 0 56 0;
-#X connect 63 0 56 0;

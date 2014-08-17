@@ -48,6 +48,7 @@ void buttonInit(void);
 void post(char* msg, uint8_t row, uint8_t clear);
 void notifyUpdate(void);
 void waitForSynthesizer(void);
+void softwareUartInit(void);
 uint8_t checkSum(volatile uint8_t *buffer);
 
 
@@ -143,21 +144,38 @@ void buttonInit(void){
 #ifdef BUTTON_CHECK // small check func for button debugging
 	while(1){
 		if(!((BUTTON_PIN >> BUTTON_PIN_L) & 0x01)){
-			XBEE_LED_PORT |= (1 << XBEE_LED_PIN);
-		}else{
-			XBEE_LED_PORT &= ~(1 << XBEE_LED_PIN);
-		}
-
-		if(!((BUTTON_PIN >> BUTTON_PIN_R) & 0x01)){
 			HOST_LED_PORT |= (1 << HOST_LED_PIN);
 		}else{
 			HOST_LED_PORT &= ~(1 << HOST_LED_PIN);
+		}
+
+		if(!((BUTTON_PIN >> BUTTON_PIN_R) & 0x01)){
+			XBEE_LED_PORT |= (1 << XBEE_LED_PIN);
+		}else{
+			XBEE_LED_PORT &= ~(1 << XBEE_LED_PIN);
 		}
 	}
 #endif 
 	
 	PCICR |= (1<<PCINT_EN_GROUP); // enable interrupt
-	PCMSK1 |= (1<< BUTTON_PCINT_L) | (1<< BUTTON_PCINT_R); // enable PCINT on both ports
+	BUTTON_PCMSK |= (1<< BUTTON_PCINT_L) | (1<< BUTTON_PCINT_R); // enable PCINT on both ports
+}
+
+void softwareUartInit(void){
+	softuart_init(); // suart init
+	softuart_turn_rx_on(); // start receiving
+
+#ifdef UART_SOFT_RX_CHECK
+	while(1){	
+		if (softuart_kbhit()){
+			char c = softuart_getchar();
+			lcd_clrscr();
+			lcd_putc(c);
+			HOST_LED_PORT ^= (1 << HOST_LED_PIN);
+		}
+	}
+#endif 
+
 }
 
 void globalInit(void){
@@ -193,8 +211,8 @@ void post(char* msg, uint8_t row, uint8_t clear){
 void waitForSynthesizer(void){
 	uint8_t count = 0;
 	char buf[4];
-	
-	softuart_turn_rx_on();
+
+
 	for(count = 0; count < NUMBER_OF_ATTEMPT ; count++){
 		// ping
 		lcd_gotoxy(0,1);
@@ -250,7 +268,6 @@ int main(void)
 	
 	lcd_init(LCD_DISP_ON); // lcd init
 	
-	softuart_init(); // suart init
 	globalInit();
 	timer1Init();
 
@@ -260,7 +277,10 @@ int main(void)
 
 	_delay_ms(1000);
 	post("booting system...",0,TRUE);
-	sei();
+	
+	sei(); // interrupt ON
+	softwareUartInit();
+	
 	XBEE_LED_PORT |= (1 << XBEE_LED_PIN);
 	waitForSynthesizer();
 	_delay_ms(1000);
@@ -282,11 +302,20 @@ int main(void)
 			if(packetCounter0 == 21){ // packet full
 				if(packet0[21] == checkSum(packet0)){
 				uartSendByte(LEFT_HAND);
+				#ifndef TROMBONE
 				uartSendByte((packet0[11] << 5) | (packet0[12] >> 3));
 				uartSendByte((packet0[13] << 5) | (packet0[14] >> 3));
 				uartSendByte((packet0[15] << 5) | (packet0[16] >> 3));				
 				uartSendByte((packet0[17] << 5) | (packet0[18] >> 3));
 				uartSendByte((packet0[19] << 5) | (packet0[20] >> 3));
+				#else
+	
+				uartSendByte((packet0[13] << 5) | (packet0[14] >> 3));
+				int angle = (packet0)[15] << 8) + packet0[16] - 220;
+				if (angle < 0) angle = 0;
+				if (angle > 127) angle = 127;
+				uartSendByte(angle);						
+				#endif
 				uartSendByte(EOT);
 				}
 			}
@@ -305,12 +334,22 @@ int main(void)
 			if(packetCounter1 == 21){ // packet full
 				
 				if(packet1[21] == checkSum(packet1)){
+
 					uartSendByte(RIGHT_HAND);
+					#ifndef TROMBONE
 					uartSendByte((packet1[11] << 5) | (packet1[12] >> 3));
 					uartSendByte((packet1[13] << 5) | (packet1[14] >> 3));
 					uartSendByte((packet1[15] << 5) | (packet1[16] >> 3));
 					uartSendByte((packet1[17] << 5) | (packet1[18] >> 3));
 					uartSendByte((packet1[19] << 5) | (packet1[20] >> 3));
+					#else 
+					int elbow = (packet1[11] << 8) + packet1[12] -315;
+					if(elbow > 127) elbow = 127;
+					if(elbow < 0) elbow = 0;
+					
+					uartSendByte((packet1[15] << 5) | (packet1[16] >> 3));
+					uartSendByte(elbow);
+					#endif
 					uartSendByte(EOT);
 				}
 			}
@@ -431,7 +470,7 @@ ISR(TIMER1_COMPA_vect){
 ISR(BUTTON_PCINT_VECT){
 	_delay_ms(20); // anti chattering
 	PCIFR |= (1 << BUTTON_PCIF); // cancel all scheduled interruption caused by chattering
-	uint8_t status = (BUTTON_PIN >> 2) & 0x03;
+	uint8_t status = (BUTTON_PIN >> BUTTON_PIN_SHIFT) & 0x03;
 
 	timer1Stop();
 	switch (status)
